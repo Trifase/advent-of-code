@@ -1,0 +1,1 @@
+SESSIONS = "cookie from AOC website"
