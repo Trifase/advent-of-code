@@ -1,4 +1,3 @@
-
 import os
 
 # from pprint import pprint as pp
@@ -52,62 +51,12 @@ def parsing_input(data) -> any:
     return data
 
 
-MAX_INT = 0xFFFF
-def solve(wires, wire):
-    if isinstance(wire, int) or wire.isnumeric():
-        return int(wire)
-
-    value = wires[wire]
-
-    if isinstance(value, int) or value.isnumeric():
-        return int(value)
-    
-    if 'AND' in value:
-        a, b = value.split(' AND ')
-        a = solve(wires, a)
-        b = solve(wires, b)
-        wires[wire] = a & b
-        return a & b
-    elif 'OR' in value:
-        a, b = value.split(' OR ')
-        a = solve(wires, a)
-        b = solve(wires, b)
-        wires[wire] = a | b
-        return a | b
-    elif 'LSHIFT' in value:
-        a, b = value.split(' LSHIFT ')
-        a = solve(wires, a)
-        b = solve(wires, b)
-        wires[wire] = (a << b) & MAX_INT
-        return (a << b) & MAX_INT
-    elif 'RSHIFT' in value:
-        a, b = value.split(' RSHIFT ')
-        a = solve(wires, a)
-        b = solve(wires, b)
-        wires[wire] = a >> b
-        return a >> b
-    elif 'NOT' in value:
-        a = value.split('NOT ')[1]
-        a = solve(wires, a)
-        wires[wire] = MAX_INT - a
-        return MAX_INT - a
-    else:
-        return solve(wires, value)
-
-
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
     sol1 = 0
-    
-    wires = {}
-    for line in data:
-        instruction, wire = line.split(' -> ')
-        wires[wire] = instruction
-
-    solve_for = 'a'
-    sol1 = solve(wires, solve_for)
-
+    for string in data:
+        sol1 += len(string) - len(eval(string))
     return sol1
 
 
@@ -115,17 +64,9 @@ def part1(data: any) -> int:
 @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
 def part2(data: any) -> int:
     sol2 = 0
-    sol1 = 46065
-
-    wires = {}
-    for line in data:
-        instruction, wire = line.split(' -> ')
-        wires[wire] = instruction
-
-    wires['b'] = str(sol1)
-
-    solve_for = 'a'
-    sol2 = solve(wires, solve_for)
+    for string in data:
+        enc_string = '"' + string.replace('\\', '\\\\').replace('"', '\\"') + '"'
+        sol2 += len(enc_string) - len(string)
     return sol2
 
 data = get_input()
