@@ -104,7 +104,7 @@ def part2(data: any) -> int:
     # ic(happinessess)
     sol2 = max(happinessess.keys())
     pp(f"Best arrangement: {sol2} → {happinessess[sol2]}")
-    sol2 = abs(sol2 - sol1)
+    # sol2 = abs(sol2 - sol1)
     return sol2
 
 data = get_input()
