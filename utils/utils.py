@@ -197,7 +197,9 @@ def get_neighbors(coords: tuple[int], grid: list[str], diagonals: bool = False, 
         giu_sx = (y + 1, x - 1) if y != y_max - 1 and x != 0 else None
         su_sx = (y - 1, x - 1) if y != 0 and x != 0 else None
         if return_values:
-            return [grid[y][x] for y, x in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if y and x]
+            availables = [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
+            return [grid[y][x] for y, x in availables]
+            # return [grid[y][x] for y, x in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if y and x]
         return [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
 
     if return_values:
