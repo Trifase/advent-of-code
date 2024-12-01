@@ -69,14 +69,9 @@ def parsing_input(data) -> any:
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
     sol1 = 0
-
     first_list, second_list = data
-    diffs = []
     for i in range(len(first_list)): # we assume their length is equal
-        diffs.append(abs(first_list[i] - second_list[i]))
-
-    sol1 = sum(diffs)
-
+        sol1 += first_list[i] - second_list[i]
     return sol1
 
 
@@ -85,11 +80,9 @@ def part1(data: any) -> int:
 def part2(data: any) -> int:
     sol2 = 0
     first_list, second_list = data
-    similarity = 0
     for i in range(len(first_list)):
         if first_list[i] in second_list:
-            similarity += (first_list[i] * second_list.count(first_list[i]))
-    sol2 = similarity
+            sol2 += (first_list[i] * second_list.count(first_list[i]))
     return sol2
 
 data = get_input()
