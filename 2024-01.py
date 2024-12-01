@@ -7,6 +7,11 @@ import os
 from codetiming import Timer
 # from dataclassy import dataclass
 from icecream import ic
+from pprint import pprint as pp
+import itertools
+from copy import deepcopy
+
+
 
 import utils
 
@@ -18,7 +23,7 @@ DAY = int(os.path.basename(__file__).split(".")[0].split("-")[1])
 # YEAR = 2015
 # DAY = 07
 
-EXAMPLE = True
+EXAMPLE = False
 INFO = True
 DEBUG = True
 
@@ -31,6 +36,7 @@ else:
 def pprint(data: any) -> None:
     if INFO:
         print(data)
+
 
 # Input parsing
 print()
@@ -46,16 +52,31 @@ def get_input() -> any:
 @Timer(name="Parsing", text="Parsing.....DONE: {milliseconds:.0f} ms")
 def parsing_input(data) -> any:
     """
-    We'll parse the input line by line.
+    We'll do something with the input
     """
-
+    first_list, second_list = [], []
+    for line in data:
+        line = line.split("   ")
+        first_list.append(int(line[0]))
+        second_list.append(int(line[1]))
+    # reorder the list from smallest to largest
+    first_list.sort()
+    second_list.sort()
+    data = (first_list, second_list)
     return data
-
 
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
     sol1 = 0
+
+    first_list, second_list = data
+    diffs = []
+    for i in range(len(first_list)): # we assume their length is equal
+        diffs.append(abs(first_list[i] - second_list[i]))
+
+    sol1 = sum(diffs)
+
     return sol1
 
 
@@ -63,7 +84,12 @@ def part1(data: any) -> int:
 @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
 def part2(data: any) -> int:
     sol2 = 0
-
+    first_list, second_list = data
+    similarity = 0
+    for i in range(len(first_list)):
+        if first_list[i] in second_list:
+            similarity += (first_list[i] * second_list.count(first_list[i]))
+    sol2 = similarity
     return sol2
 
 data = get_input()
