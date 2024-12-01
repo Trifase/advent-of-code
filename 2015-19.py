@@ -64,21 +64,20 @@ def parsing_input(data) -> any:
     data = (replacements, molecule)
     return data
 
-
+def generate_all_replacement(molecule: str, replacements: list) -> set:
+    new_molecules = set()
+    for key, value in replacements:
+        for i in range(len(molecule)):
+            if molecule[i:i+len(key)] == key:
+                new_molecule = molecule[:i] + value + molecule[i+len(key):]
+                new_molecules.add(new_molecule)
+    return new_molecules
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
     sol1 = 0
     replacements, molecule = data
-    print(f"initial molecule: {molecule}")
-    molecules = set()
-    for key, value in replacements:
-        for i in range(len(molecule)):
-            if molecule[i:i+len(key)] == key:
-                new_molecule = molecule[:i] + value + molecule[i+len(key):]
-                print(f"new molecule: {new_molecule}")
-                molecules.add(new_molecule)
-
+    molecules = generate_all_replacement(molecule, replacements)
     sol1 = len(molecules)
     return sol1
 
@@ -87,7 +86,27 @@ def part1(data: any) -> int:
 @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
 def part2(data: any) -> int:
     sol2 = 0
-
+    replacements, molecule = data
+    # print(f"molecule: {molecule}")
+    # print(f"replacements: {replacements}")
+    step = 0
+    first_step = set()
+    first_step.add('e')
+    while molecule not in first_step:
+        # print(f'first step: {first_step}')
+        step += 1
+        print(f"Step: {step}")
+        print(f"Initial molecules: {len(first_step)}")
+        new_step = set()
+        for mol in first_step:
+            mols = generate_all_replacement(mol, replacements)
+            # print(mols)
+            for x in mols:
+                new_step.add(x)
+        # print(f'new step: {new_step}')
+        print(f"New molecules: {len(new_step)}")
+        first_step = new_step
+    sol2 = step
     return sol2
 
 data = get_input()
