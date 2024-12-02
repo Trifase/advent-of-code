@@ -8,7 +8,6 @@ from codetiming import Timer
 # from dataclassy import dataclass
 from icecream import ic
 from pprint import pprint as pp
-from collections import Counter
 import itertools
 from copy import deepcopy
 
@@ -55,24 +54,45 @@ def parsing_input(data) -> any:
     """
     We'll do something with the input
     """
-    first_list, second_list = [], []
+    d2 = []
     for line in data:
-        line = line.split("   ")
-        first_list.append(int(line[0]))
-        second_list.append(int(line[1]))
-    # reorder the list from smallest to largest
-    first_list.sort()
-    second_list.sort()
-    data = (first_list, second_list)
+        d2.append([int(x) for x in line.split()])
+    data = d2
     return data
+
+def is_safe(line: list):
+    safe = True
+    order = ''
+
+    if line[1] > line[0]: 
+        order = 'asc'
+
+    for i in range(len(line) - 1):
+        a, b = line[i], line[i + 1]
+
+        # check for distance
+        if abs(a - b) > 3 or abs(a - b) < 1:
+            safe = False
+            break
+
+        # check for order
+        if order == 'asc':
+            if a > b:
+                safe = False
+                break
+        else:
+            if a < b:
+                safe = False
+                break
+
+    return safe
+
 
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
     sol1 = 0
-    first_list, second_list = data
-    for i in range(len(first_list)): # we assume their length is equal
-        sol1 += first_list[i] - second_list[i]
+    sol1 = sum([1 for x in data if is_safe(x)])
     return sol1
 
 
@@ -80,11 +100,32 @@ def part1(data: any) -> int:
 @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
 def part2(data: any) -> int:
     sol2 = 0
-    first_list, second_list = data
-    counter = Counter(second_list)
-    for i in range(len(first_list)):
-        if first_list[i] in counter:
-            sol2 += (first_list[i] * counter[first_list[i]])
+    safe = []
+    unsafe = []
+
+    for x in data:
+        if is_safe(x):
+            safe.append(x)
+        else:
+            unsafe.append(x)
+
+    # trying to fix the unsafe lines, removing one item at a time
+    for x in unsafe:
+        resolved = False
+
+        for i in range(len(x)):
+            if resolved:
+                continue
+
+            line2: list = deepcopy(x)
+            line2.pop(i)
+
+            if is_safe(line2):
+                safe.append(line2)
+                resolved = True
+                break
+
+    sol2 = len(safe)
     return sol2
 
 data = get_input()
