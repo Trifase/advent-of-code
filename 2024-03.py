@@ -1,4 +1,3 @@
-
 import os
 
 # from pprint import pprint as pp
@@ -98,7 +97,7 @@ def part2(data: any) -> int:
 
     # sort the dict by key
     datastream = dict(sorted(datastream.items()))
-
+    
     enabled = True
     for _, v in datastream.items():
         if isinstance(v, str) and enabled:
