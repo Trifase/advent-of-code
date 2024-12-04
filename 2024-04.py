@@ -60,7 +60,7 @@ def parsing_input(data) -> any:
 
 def get_possible_words(grid, x, y, length=4):
     """
-    given a lists of list, find the next 3 neightboor in every direction (diagonals included) and return their value
+    given a grid and a coord, returns the words starting from the coord in all the 8 directions, of length X
     
     3..3..3
     .2.2.2.
