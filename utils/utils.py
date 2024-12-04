@@ -181,7 +181,7 @@ def make_grid(data: list[str]) -> list[list[str]]:
     return [list(line) for line in data]
 
 
-def get_neighbors(coords: tuple[int], grid: list[str], diagonals: bool = False, return_values: bool = False) -> list[tuple[int]]:
+def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = False, return_values: bool = False) -> list[tuple[int]]:
     y, x = coords
     y_max = len(grid)
     x_max = len(grid[0])
