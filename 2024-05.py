@@ -69,6 +69,9 @@ def parsing_input(data) -> any:
     return data
 
 def get_enabled_rules(rules, update):
+    """
+    Returns all the rules that apply to the update
+    """
     enabled_rules = []
     for rule in rules:
         a, b = rule
@@ -77,6 +80,9 @@ def get_enabled_rules(rules, update):
     return enabled_rules
 
 def is_update_correct(enabled_rules, update):
+    """
+    True if the update obeys all the rules
+    """
     for rule in enabled_rules:
         a, b = rule
         if update.index(int(a)) > update.index(int(b)):
@@ -90,16 +96,24 @@ def part1(data: any) -> int:
     rules, updates = data
     for update in updates:
         enabled_rules = get_enabled_rules(rules, update)
+
         if is_update_correct(enabled_rules, update):
             sol1 += update[len(update)//2]
+
     return sol1
 
+
 def try_sort(update, rule):
+    """
+    Given a broken rule, it puts the page in the right order
+    """
     a, b = rule
     a_index = update.index(int(a))
     b_index = update.index(int(b))
+    # the old switch-a-roo
     update.insert(a_index, update.pop(b_index))
     return update
+
 
 # Part 2
 @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
