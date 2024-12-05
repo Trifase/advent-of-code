@@ -23,7 +23,7 @@ DAY = int(os.path.basename(__file__).split(".")[0].split("-")[1])
 # YEAR = 2015
 # DAY = 07
 
-EXAMPLE = False
+EXAMPLE = True
 INFO = True
 DEBUG = True
 
