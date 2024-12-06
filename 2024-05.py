@@ -25,7 +25,7 @@ DAY = int(os.path.basename(__file__).split(".")[0].split("-")[1])
 # YEAR = 2015
 # DAY = 07
 
-EXAMPLE = False
+EXAMPLE = True
 INFO = True
 DEBUG = True
 
@@ -120,7 +120,7 @@ def try_sort(update, rule):
 def part2(data: any) -> int:
     sol2 = 0
     rules, updates = data
-
+    swaps = 0
     for update in updates:
         enabled_rules = get_enabled_rules(rules, update)
 
@@ -131,8 +131,10 @@ def part2(data: any) -> int:
                     a, b = rule
                     if update.index(int(a)) > update.index(int(b)):
                         update = try_sort(update, rule)
+                        swaps += 1
 
             sol2 += update[len(update)//2]
+    print(f"Swaps: {swaps}")
     return sol2
 
 data = get_input()

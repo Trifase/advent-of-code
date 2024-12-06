@@ -49,6 +49,19 @@ class MovingThing:
     def coords_grid(self):
         return (self.x, self.y)
 
+    @property
+    def look_ahead(self):
+        match self.dir:
+            case "N":
+                return (self.y - 1, self.x)
+            case "S":
+                return (self.y + 1, self.x)
+            case "E":
+                return (self.y, self.x + 1)
+            case "W":
+                return (self.y, self.x - 1)
+
+
     @coords.setter
     def coords(self, coords):
         self.x = coords[1]
@@ -111,7 +124,7 @@ class MovingThing:
         self.y = coords[1]
 
     def __repr__(self):
-        return f"MovingThing ({self.x}, {self.y}) dir={self.dir})"
+        return f"MovingThing y={self.y}, x={self.x} dir={self.dir}"
 
 
 def rematch(pattern, string):
@@ -181,10 +194,12 @@ def make_grid(data: list[str]) -> list[list[str]]:
     return [list(line) for line in data]
 
 
-def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = False, return_values: bool = False) -> list[tuple[int]]:
+def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = False, return_values: bool = False, return_dict: bool = False) -> list[tuple[int, int]] | dict[tuple[int,int], str] | list[str]:
     y, x = coords
     y_max = len(grid)
     x_max = len(grid[0])
+    if return_dict:
+        return_values = False
 
     su = (y - 1, x) if y != 0 else None
     dx = (y, x + 1) if x != x_max - 1 else None
@@ -203,5 +218,17 @@ def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = Fa
         return [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
 
     if return_values:
+        print('v', [su, dx, giu, sx])
         return [grid[y][x] for y, x in [su, dx, giu, sx] if y and x]
+    if return_dict:
+        my_dict = {}
+        if su:
+            my_dict[su] = grid[su[0]][su[1]]
+        if dx:
+            my_dict[dx] = grid[dx[0]][dx[1]]
+        if giu:
+            my_dict[giu] = grid[giu[0]][giu[1]]
+        if sx:
+            my_dict[sx] = grid[sx[0]][sx[1]]
+        return my_dict
     return [t for t in [su, dx, giu, sx] if t]
