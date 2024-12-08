@@ -1,17 +1,14 @@
-
+import itertools
 import os
+from copy import deepcopy
+from pprint import pprint as pp
 
 # from pprint import pprint as pp
 # from datetime import date
-
 from codetiming import Timer
+
 # from dataclassy import dataclass
 from icecream import ic
-from pprint import pprint as pp
-import itertools
-from copy import deepcopy
-
-
 
 import utils
 
@@ -40,6 +37,8 @@ def pprint(data: any) -> None:
 
 # Input parsing
 print()
+
+
 @Timer(name="Opening", text="Opening.....DONE: {milliseconds:.0f} ms")
 def get_input() -> any:
     """
@@ -56,6 +55,7 @@ def parsing_input(data) -> any:
     """
     return data
 
+
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 def part1(data: any) -> int:
@@ -70,6 +70,7 @@ def part2(data: any) -> int:
     sol2 = 0
 
     return sol2
+
 
 data = get_input()
 data = parsing_input(data)
