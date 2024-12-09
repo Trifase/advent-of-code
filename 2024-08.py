@@ -1,7 +1,5 @@
 import itertools
 import os
-from copy import deepcopy
-from pprint import pprint as pp
 
 # from pprint import pprint as pp
 # from datetime import date
@@ -150,13 +148,13 @@ def part2(data: any) -> int:
 
     sol2 = len(total_antinodes)
 
-    # for antinode in total_antinodes:
-    #     print("Placing antinode", antinode)
-    #     y, x = antinode
-    #     grid[y][x] = "#"
+    for antinode in total_antinodes:
+        print("Placing antinode", antinode)
+        y, x = antinode
+        grid[y][x] = "#"
 
-    # for line in grid:
-    #     print("".join(line))
+    for line in grid:
+        print("".join(line))
     return sol2
 
 
