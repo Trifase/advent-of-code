@@ -174,7 +174,7 @@ def part2(data: any) -> int:
 
     for file in files:
         last_file_index = file.start
-        # print("=======")
+
         print(f"Defrag: trying to place file {last_file_index}")
         data = move_file_in_empty_space(data, last_file_index, only_if_fits=True)
 
@@ -182,8 +182,6 @@ def part2(data: any) -> int:
         if not section.free:
             sol2 += section.checksum
 
-    # for section in data.values():
-    #     print(section)
     return sol2
 
 
