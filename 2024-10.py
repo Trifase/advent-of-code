@@ -64,13 +64,12 @@ def parsing_input(data) -> any:
     data = (data2, starts)
     return data
 
-def find_trails(grid, start, visited, hikes):
+def find_trails(grid, start, visited: set|None, hikes: list|None) -> list:
     next_n = start
 
     neighbors = utils.get_neighbors(next_n, grid)
     if not visited:
         visited = set()
-    if not visited:
         hikes = []
 
     visited.add(start)
@@ -87,7 +86,7 @@ def find_trails(grid, start, visited, hikes):
                 hikes.append(n)
             find_trails(grid, n, visited, hikes)
 
-    return visited, hikes
+    return hikes
 
 # Part 1
 @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
@@ -96,15 +95,8 @@ def part1(data: any) -> int:
     grid, starts = data
     for start in starts:
         score = 0
-
-        # visited is a set of coordinates of all the cells that are part of the trail
-        visited, _ = find_trails(grid, start, None, None)
-
-        for v in visited:
-            y, x = v
-            if grid[y][x] == 9:
-                score += 1
-        print(f"Trail with start {start} has score {score}")
+        hikes = set(find_trails(grid, start, None, None))
+        score = len(hikes)
         sol1 += score
 
     return sol1
@@ -117,10 +109,8 @@ def part2(data: any) -> int:
     grid, starts = data
     for start in starts:
         score = 0
-        # hikes is a list of coordinates of peaks, basically how many times in the trail the peak is reached
-        _, hikes = find_trails(grid, start, None, None)
+        hikes = find_trails(grid, start, None, None)
         score = len(hikes)
-        print(f"Trail with start {start} has score {score}")
         sol2 += score
 
     return sol2
