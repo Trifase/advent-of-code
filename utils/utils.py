@@ -215,7 +215,8 @@ def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = Fa
             availables = [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
             return [grid[y][x] for y, x in availables]
             # return [grid[y][x] for y, x in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if y and x]
-        return [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
+        if not return_dict:
+            return [t for t in [su, dx, giu, sx, su_dx, giu_dx, giu_sx, su_sx] if t]
 
     if return_values:
         print('v', [su, dx, giu, sx])
@@ -224,11 +225,19 @@ def get_neighbors(coords: tuple[int, int], grid: list[str], diagonals: bool = Fa
         my_dict = {}
         if su:
             my_dict[su] = grid[su[0]][su[1]]
+        if diagonals and su_dx:
+            my_dict[su_dx] = grid[su_dx[0]][su_dx[1]]
         if dx:
             my_dict[dx] = grid[dx[0]][dx[1]]
+        if diagonals and giu_dx:
+            my_dict[giu_dx] = grid[giu_dx[0]][giu_dx[1]]
         if giu:
             my_dict[giu] = grid[giu[0]][giu[1]]
+        if diagonals and giu_sx:
+            my_dict[giu_sx] = grid[giu_sx[0]][giu_sx[1]]
         if sx:
             my_dict[sx] = grid[sx[0]][sx[1]]
+        if diagonals and su_sx:
+            my_dict[su_sx] = grid[su_sx[0]][su_sx[1]]
         return my_dict
     return [t for t in [su, dx, giu, sx] if t]
