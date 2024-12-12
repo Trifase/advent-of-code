@@ -58,14 +58,15 @@ def parsing_input(data) -> any:
     return data
 
 
-
 # remade for p2 with cache
 # using strings because it's easier to split
 @cache
 def blink_stone(stone: str, times: int) -> int:
-    t1 = times -1
+
     if times == 0: # time for exit!
         return 1
+
+    t1 = times -1
 
     # 0 stone
     if not stone or int(stone) == 0: 
