@@ -56,7 +56,7 @@ def parsing_input(data) -> any:
     return data
 
 
-def is_angle(coord, value, neighbors):
+def how_many_corners(coord, value, neighbors):
     # This is kinda terrible but it works
     y, x = coord
     up, up_r, right, down_r, down, down_l, left, up_l = (y-1, x), (y-1, x+1), (y, x+1), (y+1, x+1), (y+1, x), (y+1, x-1), (y, x-1), (y-1, x-1)
@@ -177,7 +177,7 @@ def part2(data: any) -> int:
         for coord in points:
             y, x = coord
             value = data[y][x]
-            sides = is_angle(coord, value, utils.get_neighbors(coord, data, diagonals=True, return_dict=True))
+            sides = how_many_corners(coord, value, utils.get_neighbors(coord, data, diagonals=True, return_dict=True))
             # print(f"{value}: {coord} -> {sides}")
             s += sides
         # p = calculate_perimeter(points, data)
