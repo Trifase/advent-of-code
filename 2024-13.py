@@ -41,7 +41,6 @@ def pprint(data: any) -> None:
 print()
 
 
-# @Timer(name="Opening", text="Opening.....DONE: {milliseconds:.0f} ms")
 @utils.profiler(display_name="Opening.....DONE")
 def get_input() -> any:
     """
@@ -81,6 +80,7 @@ class ClawMachine():
         x, y = sp.symbols('x, y')
         eq1 = sp.Eq(a_x * x + b_x * y, p_x)
         eq2 = sp.Eq(a_y * x + b_y * y, p_y)
+        # print(eq1, eq2)
         ans = sp.solve((eq1, eq2), (x, y))
     
         if ans[x] > 0 and isinstance(ans[x], sp.core.numbers.Integer) and ans[y] > 0 and isinstance(ans[y], sp.core.numbers.Integer):
@@ -96,7 +96,6 @@ class ClawMachine():
         return self.a_presses * self.a_token_price + self.b_presses * self.b_token_price if self.is_winnable else None
 
 
-# @Timer(name="Parsing", text="Parsing.....DONE: {milliseconds:.0f} ms")
 @utils.profiler(display_name="Parsing.....DONE")
 def parsing_input(data) -> any:
     """
@@ -107,55 +106,51 @@ def parsing_input(data) -> any:
     button_b = tuple()
     prize = tuple()
     for line in data:
-        # print(line)
         if "Button A" in line:
             # Button A: X+94, Y+34
-            l = line.split(": ")[1]
-            x, y = l.split(", ")
+            dat = line.split(": ")[1]
+            x, y = dat.split(", ")
             button_a = (int(x.split("+")[1]), int(y.split("+")[1]))
         elif "Button B" in line:
             # Button B: X+94, Y+34
-            l = line.split(": ")[1]
-            x, y = l.split(", ")
+            dat = line.split(": ")[1]
+            x, y = dat.split(", ")
             button_b = (int(x.split("+")[1]), int(y.split("+")[1]))
         elif "Prize" in line:
             # Prize: X+94, Y+34
-            l = line.split(": ")[1]
-            x, y = l.split(", ")
+            dat = line.split(": ")[1]
+            x, y = dat.split(", ")
             prize = (int(x.split("=")[1]), int(y.split("=")[1]))
         else:
-            claws.append(ClawMachine(button_a=button_a, button_b=button_b, prize=prize))
+            claws.append({'button_a': button_a, 'button_b': button_b, 'prize': prize})
             button_a = tuple()
             button_b = tuple()
             prize = tuple()
-    claws.append(ClawMachine(button_a=button_a, button_b=button_b, prize=prize)) # last row i guess
+    # the last claw
+    claws.append({'button_a': button_a, 'button_b': button_b, 'prize': prize})
     data = claws
     return data
 
 
 # Part 1
-# @Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
 @utils.profiler(display_name="Part 1......DONE")
 def part1(data: any) -> int:
     sol1 = 0
     for claw in data:
-        # print(claw, claw.is_winnable, claw.total_cost)
-        if claw.is_winnable:
-            sol1 += claw.total_cost
+        c = ClawMachine(button_a=claw['button_a'], button_b=claw['button_b'], prize=claw['prize'])
+        if c.is_winnable:
+            sol1 += c.total_cost
     return sol1
 
 
 # Part 2
-# @Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
 @utils.profiler(display_name="Part 2......DONE")
 def part2(data: any) -> int:
     sol2 = 0
-    new_claws = []
-    for c in data:
-        new_claws.append(ClawMachine(button_a=c.button_a, button_b=c.button_b, prize=c.prize, conversion_error=True))
-    for claw in new_claws:
-        if claw.is_winnable:
-            sol2 += claw.total_cost
+    for claw in data:
+        c = ClawMachine(button_a=claw['button_a'], button_b=claw['button_b'], prize=claw['prize'], conversion_error=True)
+        if c.is_winnable:
+            sol2 += c.total_cost
 
     return sol2
 
