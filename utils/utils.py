@@ -5,6 +5,7 @@ import sys
 
 import requests
 from dataclassy import dataclass
+from time import perf_counter_ns
 
 from .sessions import SESSIONS
 
@@ -15,6 +16,20 @@ def remove_empty_from_data(lista: list[str]) -> list[str]:
         if element:
             newlist.append(element)
     return newlist
+
+def profiler(display_name: str):
+    def decorator(function):
+        def wrapper(*args, **kwargs):
+            start_time = perf_counter_ns()
+            result = function(*args, **kwargs)
+            stop_time = perf_counter_ns() - start_time
+            time_len = min(9, ((len(str(stop_time))-1)//3)*3)
+            time_conversion = {9: 's', 6: 'ms', 3: 'µs', 0: 'ns'}
+            name = display_name if display_name else function.__name__
+            print(f"{name}: {stop_time / (10**time_len)} {time_conversion[time_len]}")
+            return result
+        return wrapper
+    return decorator
 
 
 @dataclass
