@@ -1,7 +1,7 @@
-import itertools
+# import itertools
 import os
-from copy import deepcopy
-from pprint import pprint as pp
+# from copy import deepcopy
+# from pprint import pprint as pp
 
 # from pprint import pprint as pp
 # from datetime import date
@@ -10,7 +10,7 @@ from pprint import pprint as pp
 from dataclassy import dataclass
 from icecream import ic
 
-import sympy as sp
+# import sympy as sp
 
 import utils
 
@@ -77,22 +77,32 @@ class ClawMachine():
         # a_x * x + b_x * y = p_x
         # a_y * x + b_y * y = p_y
         # for x and y both integers and positive
-        x, y = sp.symbols('x, y')
-        eq1 = sp.Eq(a_x * x + b_x * y, p_x)
-        eq2 = sp.Eq(a_y * x + b_y * y, p_y)
-        # print(eq1, eq2)
-        ans = sp.solve((eq1, eq2), (x, y))
-    
-        if ans[x] > 0 and isinstance(ans[x], sp.core.numbers.Integer) and ans[y] > 0 and isinstance(ans[y], sp.core.numbers.Integer):
+
+        # solution using MATHS!
+        a = round((p_y - ((b_y * p_x) / b_x)) / (a_y - ((b_y * a_x) / b_x)))
+        b = round((p_x - a_x * a) / b_x)
+        if a_x * a + b_x * b == p_x and a_y * a + b_y * b == p_y:
             self.is_winnable = True
-            self.a_presses = ans[x]
-            self.b_presses = ans[y]
+            self.a_presses = a
+            self.b_presses = b
+
+        # solution using sympy
+        # x, y = sp.symbols('x, y')
+        # eq1 = sp.Eq(a_x * x + b_x * y, p_x)
+        # eq2 = sp.Eq(a_y * x + b_y * y, p_y)
+        # # print(eq1, eq2)
+        # ans = sp.solve((eq1, eq2), (x, y), check=False, simplify=False)
+    
+        # if ans[x] > 0 and isinstance(ans[x], sp.core.numbers.Integer) and ans[y] > 0 and isinstance(ans[y], sp.core.numbers.Integer):
+        #     self.is_winnable = True
+        #     self.a_presses = ans[x]
+        #     self.b_presses = ans[y]
 
     def __str__(self):
         return f'ClawMachine(button_a={self.button_a}, button_b={self.button_b}, prize={self.prize})'
 
     @property
-    def total_cost(self):
+    def total_cost(self) -> int | None:
         return self.a_presses * self.a_token_price + self.b_presses * self.b_token_price if self.is_winnable else None
 
 
@@ -138,7 +148,7 @@ def part1(data: any) -> int:
     sol1 = 0
     for claw in data:
         c = ClawMachine(button_a=claw['button_a'], button_b=claw['button_b'], prize=claw['prize'])
-        if c.is_winnable:
+        if c.is_winnable and c.total_cost:
             sol1 += c.total_cost
     return sol1
 
@@ -149,7 +159,7 @@ def part2(data: any) -> int:
     sol2 = 0
     for claw in data:
         c = ClawMachine(button_a=claw['button_a'], button_b=claw['button_b'], prize=claw['prize'], conversion_error=True)
-        if c.is_winnable:
+        if c.is_winnable and c.total_cost:
             sol2 += c.total_cost
 
     return sol2

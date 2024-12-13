@@ -39,7 +39,7 @@ def pprint(data: any) -> None:
 print()
 
 
-@Timer(name="Opening", text="Opening.....DONE: {milliseconds:.0f} ms")
+@utils.profiler(display_name="Opening.....DONE")
 def get_input() -> any:
     """
     Get the input from the file or internet
@@ -48,7 +48,7 @@ def get_input() -> any:
     return data
 
 
-@Timer(name="Parsing", text="Parsing.....DONE: {milliseconds:.0f} ms")
+@utils.profiler(display_name="Parsing.....DONE")
 def parsing_input(data) -> any:
     """
     We'll do something with the input
@@ -57,7 +57,7 @@ def parsing_input(data) -> any:
 
 
 # Part 1
-@Timer(name="Part 1", text="Part 1......DONE: {milliseconds:.0f} ms")
+@utils.profiler(display_name="Part 1......DONE")
 def part1(data: any) -> int:
     sol1 = 0
 
@@ -65,7 +65,7 @@ def part1(data: any) -> int:
 
 
 # Part 2
-@Timer(name="Part 2", text="Part 2......DONE: {milliseconds:.0f} ms")
+@utils.profiler(display_name="Part 2......DONE")
 def part2(data: any) -> int:
     sol2 = 0
 
