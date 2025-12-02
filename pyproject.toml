@@ -1,0 +1,11 @@
+[project]
+name = "advent-of-code"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "dataclassy>=1.0.1",
+    "icecream>=2.1.8",
+    "requests>=2.32.5",
+]
