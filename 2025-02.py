@@ -77,15 +77,21 @@ def part1(data: any) -> int:
 @utils.profiler(display_name="Part 2......DONE")
 def part2(data: any) -> int:
     sol2 = 0
+    divisori = {}
     for _range in data:
             start, end = map(int, _range.split("-"))
             for n in range(start, end + 1):
                 n = str(n)
                 ln = len(n)
-                # list of divisors of ln
-                divisors = [i for i in range(1, ln + 1) if ln % i == 0]
-                # remove 1 from the divisors
-                divisors = [d for d in divisors if d != 1]
+                if ln not in divisori:
+                    # compute and store the list of divisors
+                    divisors= [i for i in range(1, ln + 1) if ln % i == 0]
+
+                    # remove 1 from the divisors
+                    divisors = [d for d in divisors if d != 1]
+                    divisori[ln] = divisors
+                else:
+                    divisors = divisori[ln]
 
                 for d in divisors:
                     part_len = ln // d
@@ -94,7 +100,7 @@ def part2(data: any) -> int:
                         # print(f"n: {n}, is made of {parts[0]} * {d} times")
                         sol2 += int(n)
                         break
-
+    print(divisori)
     return sol2
 
 
