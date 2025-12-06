@@ -83,9 +83,11 @@ def part2(data: any) -> int:
     # for each range, remove the overlap with other ranges merging the 'touching' ranges in a big range
     merged_ranges = []
     for start, end in sorted(ranges):
+        # if the start of range 2 is greater than the end of range 1 + 1, then they are not touching
         if not merged_ranges or merged_ranges[-1][1] < start - 1:
             merged_ranges.append([start, end])
         else:
+            # merge the range
             merged_ranges[-1][1] = max(merged_ranges[-1][1], end)
     ranges = merged_ranges
 
