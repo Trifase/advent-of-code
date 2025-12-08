@@ -26,7 +26,7 @@ def profiler(display_name: str):
             time_len = min(9, ((len(str(stop_time))-1)//3)*3)
             time_conversion = {9: 's', 6: 'ms', 3: 'µs', 0: 'ns'}
             name = display_name if display_name else function.__name__
-            print(f"{name}: {stop_time / (10**time_len)} {time_conversion[time_len]}")
+            print(f"{name}: {round(stop_time / (10**time_len), 4)} {time_conversion[time_len]}")
             return result
         return wrapper
     return decorator
@@ -89,6 +89,8 @@ class MovingThing:
             self.dir = dirs[(curr_dir + 1) % 4]
         elif dir == "L":
             self.dir = dirs[(curr_dir - 1) % 4]
+        elif dir in dirs:
+            self.dir = dir
 
     def go(self, units: int = 1):
         match self.dir:
@@ -140,6 +142,7 @@ class MovingThing:
 
     def __repr__(self):
         return f"MovingThing y={self.y}, x={self.x} dir={self.dir}"
+
 
 
 def rematch(pattern, string):
