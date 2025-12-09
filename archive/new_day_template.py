@@ -1,8 +1,6 @@
 
 import os
 
-from icecream import ic
-
 import utils
 
 # YEAR and DAY from the current file name YYYY-DD.
@@ -14,17 +12,11 @@ DAY = int(os.path.basename(__file__).split(".")[0].split("-")[1])
 # DAY = 07
 
 EXAMPLE = True
-INFO = True
 DEBUG = True
 
-if DEBUG:
-    ic.enable()
-else:
-    ic.disable()
 
-
-def pprint(data: any) -> None:
-    if INFO:
+def p(data: any) -> None:
+    if DEBUG:
         print(data)
 
 
@@ -50,6 +42,7 @@ def parsing_input(data) -> any:
     return data
 
 
+
 # Part 1
 @utils.profiler(display_name="Part 1......DONE")
 def part1(data: any) -> int:
@@ -66,6 +59,8 @@ def part2(data: any) -> int:
     return sol2
 
 
+s1 = 'Not run'
+s2 = 'Not run'
 data = get_input()
 data = parsing_input(data)
 s1 = part1(data)
